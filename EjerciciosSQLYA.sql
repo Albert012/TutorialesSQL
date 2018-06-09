@@ -1441,17 +1441,27 @@ fecha datetime
 );
 
 insert into Inscriptos values('Juan Perez','445654','tenis','s');
+
 insert into Inscriptos values('Maria Lopez','45654654','tenis','s');
+
 insert into Inscriptos values('Agustin Juarez','353467','tenis','n');
+
 insert into Inscriptos values('Marta Garcia','35643564','natacion','s');
+
 insert into Inscriptos values('Juan Perez','356364','natacion','s');
+
 insert into Inscriptos values('Maria Lopez','73783','natacion','n');
 
 insert into Inasistencias values('25345345','tenis','2006-12-01');
+
 insert into Inasistencias values('34535543','tenis','2006-12-08');
+
 insert into Inasistencias values('34543435','tenis','2006-12-01');
+
 insert into Inasistencias values('7675688','tenis','2006-12-08');
+
 insert into Inasistencias values('8768678','natacion','2006-12-02');
+
 insert into Inasistencias values('7456756','natacion','2006-12-02');
 
 select incr.nombre, incr.deporte, ins.fecha from Inscriptos as incr join Inasistencias as ins 
@@ -1486,15 +1496,23 @@ nombre varchar(20),
 primary key (codigo)
 );
 insert into Clientes values ('Lopez Marcos','Colon 111','Córdoba',1);
+
 insert into Clientes values ('Perez Ana','San Martin 222','Cruz del Eje',1);
+
 insert into Clientes values ('Garcia Juan','Rivadavia 333','Villa Maria',1);
+
 insert into Clientes values ('Perez Luis','Sarmiento 444','Rosario',2);
+
 insert into Clientes values ('Gomez Ines','San Martin 666','Santa Fe',2);
+
 insert into Clientes values ('Torres Fabiola','Alem 777','La Plata',4);
+
 insert into Clientes values ('Garcia Luis','Sucre 475','Santa Rosa',5);
 
 insert into Provincias (nombre) values('Cordoba');
+
 insert into Provincias (nombre) values('Santa Fe');
+
 insert into Provincias (nombre) values('Corrientes');
 
 
@@ -1538,15 +1556,23 @@ primary key (codigo)
 );
 
 insert into Provincias (nombre) values('Cordoba');
+
 insert into Provincias (nombre) values('Santa Fe');
+
 insert into Provincias (nombre) values('Corrientes');
 
 insert into Clientes values ('Lopez Marcos','Colon 111','Córdoba',1);
+
 insert into Clientes values ('Perez Ana','San Martin 222','Cruz del Eje',1);
+
 insert into Clientes values ('Garcia Juan','Rivadavia 333','Villa Maria',1);
+
 insert into Clientes values ('Perez Luis','Sarmiento 444','Rosario',2);
+
 insert into Clientes values ('Gomez Ines','San Martin 666','Santa Fe',2);
+
 insert into Clientes values ('Torres Fabiola','Alem 777','La Plata',4);
+
 insert into Clientes values ('Garcia Luis','Sucre 475','Santa Rosa',5);
 
 select c.nombre, c.domicilio, c.ciudad, p.nombre from Clientes as c right join Provincias as p
@@ -1582,16 +1608,25 @@ matricula char(1) --'s'=paga 'n'=impaga
 );
 
 insert into Deportes values('tenis','Marcelo Roca');
+
 insert into Deportes values('natacion','Marta Torres');
+
 insert into Deportes values('basquet','Luis Garcia');
+
 insert into Deportes values('futbol','Marcelo Roca');
  
 insert into Inscriptos values('786978',3,'s');
+
 insert into Inscriptos values('789787',3,'s');
+
 insert into Inscriptos values('797855',3,'n');
+
 insert into Inscriptos values('75756756',2,'s');
+
 insert into Inscriptos values('5756765',2,'s');
+
 insert into Inscriptos values('7567567',4,'n'); 
+
 insert into Inscriptos values('5675676',5,'n');
 
 select ins.documento, matricula, d.nombre from Inscriptos as ins join Deportes as d
@@ -1615,50 +1650,1143 @@ on ins.codigodeporte = d.codigo;
 
 
 --70) Combinaciones cruzadas (cross join)
+if OBJECT_ID('Mujeres') is not null 
+drop table Mujeres;
+
+if OBJECT_ID('Hombre') is not null 
+drop table Hombre;
+
+create table Mujeres(
+nombre varchar(30),
+domicilio varchar(30),
+edad int
+);
+
+create table Hombre(
+nombre varchar(30),
+domicilio varchar(30),
+edad int
+);
+
+insert into Mujeres values('Maria Lopez','Colon 123',45);
+
+insert into Mujeres values('Liliana Garcia','Sucre 456',35);
+
+insert into Mujeres values('Susana Lopez','Avellaneda 98',41);
+
+insert into Hombre values('Juan Torres','Sarmiento 755',44);
+
+insert into Hombre values('Marcelo Oliva','San Martin 874',56);
+
+insert into Hombre values('Federico Pereyra','Colon 234',38);
+
+insert into Hombre values('Juan Garcia','Peru 333',50);
+
+select h.nombre, h.edad, m.nombre, m.edad from Hombre as h cross join Mujeres as m;
+
+select h.nombre, h.edad, m.nombre, m.edad from Hombre as h cross join Mujeres as m
+where h.edad > 40 and m.edad > 40;
+
+select h.nombre, h.edad, m.nombre, m.edad from Hombre as h cross join Mujeres as m
+where h.edad - m.edad between -10 and 10;
+
+
 
 --73) Combinación de más de dos tablas
+if OBJECT_ID('Socios') is not null 
+drop table Socios;
 
+if OBJECT_ID('Deportes') is not null 
+drop table Deportes;
+
+if OBJECT_ID('Inscriptos') is not null 
+drop table Inscriptos;
+
+create table Socios(
+documento char(8) not null, 
+nombre varchar(30),
+domicilio varchar(30),
+primary key(documento)
+);
+
+create table Deportes(
+codigo tinyint identity,
+nombre varchar(20),
+profesor varchar(15),
+primary key(codigo)
+);
+
+create table Inscriptos(
+documento char(8) not null, 
+codigodeporte tinyint not null,
+anio char(4),
+matricula char(1),--'s'=paga, 'n'=impaga
+primary key(documento,codigodeporte,anio)
+);
+
+insert into Socios values('46547765','Ana Acosta','Avellaneda 111');
+
+insert into Socios values('56756765','Betina Bustos','Bulnes 222');
+
+insert into Socios values('35367789','Carlos Castro','Caseros 333');
+
+insert into Socios values('64578999','Daniel Duarte','Dinamarca 44');
+
+insert into Deportes values('basquet','Juan Juarez');
+
+insert into Deportes values('futbol','Pedro Perez');
+
+insert into Deportes values('natacion','Marina Morales');
+
+insert into Deportes values('tenis','Marina Morales');
+
+insert into Inscriptos values ('987978',3,'2006','s');
+
+insert into Inscriptos values ('9789789',3,'2006','s');
+
+insert into Inscriptos values ('56745765',3,'2006','n');
+
+insert into Inscriptos values ('43423423',3,'2005','s');
+
+insert into Inscriptos values ('23467657',3,'2007','n');
+
+insert into Inscriptos values ('34543534',1,'2006','s');
+
+insert into Inscriptos values ('3453453',2,'2006','s');
+
+insert into Inscriptos values ('345435435',0,'2006','s');
+
+select s.nombre, d.nombre, ins.anio from Inscriptos as ins 
+left join Socios as s on ins.documento = s.documento
+right join Deportes as d on ins.codigodeporte = d.codigo;
+
+select s.nombre, d.nombre, anio, matricula from Inscriptos as ins 
+full join Deportes as d on ins.codigodeporte = d.codigo
+full join Socios as s on ins.documento = s.documento;
+
+
+select s.nombre, d.nombre, anio, matricula from Inscriptos as ins 
+join Socios as s on ins.documento = s.documento
+join Deportes as d on ins.codigodeporte = d.codigo
+where s.documento = '979788'; 
 
 --82) Unión
+if OBJECT_ID('Clientes') is not null 
+drop table Clientes;
 
+if OBJECT_ID('Proveedores') is not null 
+drop table Proveedores;
+
+if OBJECT_ID('Empleados') is not null 
+drop table Empleados;
+
+create table Proveedores(
+codigo int identity,
+nombre varchar (30),
+domicilio varchar(30),
+primary key(codigo)
+);
+
+create table Clientes(
+codigo int identity,
+nombre varchar (30),
+domicilio varchar(30),
+primary key(codigo)
+);
+
+create table Empleados(
+documento char(8) not null,
+nombre varchar(20),
+apellido varchar(20),
+domicilio varchar(30),
+primary key(documento)
+);
+
+insert into Proveedores values('Bebida cola','Colon 123');
+
+insert into Proveedores values('Carnes Unica','Caseros 222');
+
+insert into Proveedores values('Lacteos Blanca','San Martin 987');
+
+insert into Clientes values('Supermercado Lopez','Avellaneda 34');
+
+insert into Clientes values('Almacen Anita','Colon 987');
+
+insert into Clientes values('Garcia Juan','Sucre 345');
+
+insert into Empleados values('978978','Federico','Lopez','Colon 987');
+
+insert into Empleados values('978978','Ana','Marquez','Sucre 333');
+
+insert into Empleados values('978978','Luis','Perez','Caseros 956');
+
+select nombre, domicilio from Proveedores
+union
+select nombre, domicilio from Clientes
+union
+select nombre + ' ' + apellido, domicilio from Empleados;
+
+
+select nombre, domicilio, 'proveedor' as categoria from Proveedores
+union
+select nombre, domicilio, 'cliente' from Clientes
+union
+select nombre + ' ' + apellido, domicilio, 'empleado' from Empleados order by categoria;
 
 --83) Agregar y eliminar campos ( alter table - add - drop)
+if OBJECT_ID('Empleados') is not null 
+drop table Empleados;
+
+create table Empleados(
+apellido varchar(20),
+nombre varchar(20),
+domicilio varchar(30),
+fechaingreso datetime
+);
+
+insert into Empleados(apellido,nombre) values ('Rodriguez','Pablo');
+
+alter table Empleados add sueldo decimal(5,2);
+
+sp_columns Empleados;
+
+alter table Empleados add codigo int identity;
+
+alter table Empleados add documento char(8) not null default '00000000';
+
+sp_columns Empleados;
+
+alter table Empleados drop column sueldo;
+
+sp_columns Empleados;
+
+alter table Empleados drop column codigo, fechaingreso;
+
+sp_columns Empleados;
+
 
 --84) Alterar campos (alter table - alter)
+if OBJECT_ID('Empleados') is not null 
+drop table Empleados;
+
+create table Empleados(
+codigo int not null,
+documento char(7) not null,
+nombre varchar(10),
+domicilio varchar(30),
+ciudad varchar(20) default 'Buenos Aires',
+sueldo decimal(6,2),
+cantidadhijos tinyint default 0,
+primary key(codigo)
+);
+
+alter table Empleados alter column nombre varchar(30);
+
+sp_columns Empleados;
+
+alter table Empleados alter column sueldo decimal(6,2) not null;
+
+alter table Empleados alter column documento char(8);
+
+insert into Empleados values(1,'67867867','Juan Perez','Colon 123','Cordoba',500,3);
+
+insert into Empleados values(2,'6786767',null,'Sucre 456','Cordoba',600,2);
+
+delete from Empleados where nombre is null;
+
+alter table Empleados alter column nombre varchar(30) not null;
+
+alter table Empleados alter column ciudad varchar(10);
+
+alter table Empleados alter column ciudad varchar(15);
+
+insert into Empleados values(3,'33333333','Juan Perez','Sarmiento 856',default,500,4);
+
+
 
 --86) Campos calculados
- 
+if OBJECT_ID('Articulos') is not null 
+drop table Articulos;
+
+create table Articulos(
+codigo int identity,
+descripcion varchar(30),
+precio decimal(5,2) not null,
+cantidad smallint not null default 0,
+montototal as precio*cantidad
+);
+
+insert into Articulos values('birome',1.5,100);
+
+insert into Articulos values('cuaderno 12 hojas',4.8,150);
+
+insert into Articulos values('lapices x 12',5,200);
+
+select * from Articulos;
+
+update Articulos set precio = 10 where descripcion = 'birome';
+
+select * from Articulos;
+
+update Articulos set cantidad=200 where descripcion='birome';
+
+select * from Articulos;
+
+
 --92) Subconsultas como expresión
+if OBJECT_ID('Alumnos') is not null 
+drop table Alumnos;
+
+create table Alumnos(
+documento char(8),
+nombre varchar(30),
+nota decimal(4,2),
+primary key(documento),
+constraint CK_alumnos_nota check (nota between 0 and 10)
+);
+
+insert into Alumnos values('7567657','Ana Algarbe',5.1);
+
+insert into Alumnos values('7567567','Bernardo Bustamante',3.2);
+
+insert into Alumnos values('3553534','Carolina Conte',4.5);
+
+insert into Alumnos values('35345345','Diana Dominguez',9.7);
+
+insert into Alumnos values('6456546','Fabian Fuentes',8.5);
+
+insert into Alumnos values('6456546','Gaston Gonzalez',9.70);
+
+select nombre, nota, documento from Alumnos where nota = (select max(nota) from Alumnos);
+
+select nombre, nota, documento, nota-(select avg(nota) from alumnos) from Alumnos 
+where nota < (select avg(nota) from Alumnos);
+
+update Alumnos set nota = 4 where nota = (select min(nota) from Alumnos);
+
+delete from Alumnos where nota < (select avg(nota) from Alumnos);
+
+
 
 --93) Subconsultas con in
+if OBJECT_ID('Ciudades') is not null 
+drop table Ciudades;
+
+if OBJECT_ID('Clientes') is not null 
+drop table Clientes;
+
+create table Ciudades(
+codigo tinyint identity,
+nombre varchar(20),
+primary key (codigo)
+);
+
+create table Clientes(
+codigo int identity,
+nombre varchar(30),
+domicilio varchar(30),
+codigociudad tinyint not null,
+primary key(codigo),
+constraint FK_clientes_codigociudad foreign key(codigociudad) references ciudades(codigo) on update cascade
+);
+
+insert into Ciudades (nombre) values('Cordoba');
+
+insert into Ciudades (nombre) values('Cruz del Eje');
+
+insert into Ciudades (nombre) values('Carlos Paz');
+
+insert into Ciudades (nombre) values('La Falda');
+
+insert into Ciudades (nombre) values('Villa Maria');
+
+insert into Clientes values ('Lopez Marcos','Colon 111',1);
+
+insert into Clientes values ('Lopez Hector','San Martin 222',1);
+
+insert into Clientes values ('Perez Ana','San Martin 333',2);
+
+insert into Clientes values ('Garcia Juan','Rivadavia 444',3);
+
+insert into Clientes values ('Perez Luis','Sarmiento 555',3);
+
+insert into Clientes values ('Gomez Ines','San Martin 666',4);
+
+insert into Clientes values ('Torres Fabiola','Alem 777',5);
+
+insert into Clientes values ('Garcia Luis','Sucre 888',5);
+
+select nombre from Ciudades where codigo in(select codigociudad from Clientes 
+where domicilio like 'San Martin%');
+
+select c.nombre from Ciudades as c join Clientes as cl on c.codigo = cl.codigociudad
+where domicilio like 'San Martin%';
+
+select nombre from Ciudades where codigo not in(select codigociudad from Clientes 
+where nombre like 'A%');
+
+select codigociudad from Clientes where nombre like 'G%'
+
 
 --94) Subconsultas any - some - all
+if OBJECT_ID('Inscriptos') is not null 
+drop table Inscriptos;
+
+if OBJECT_ID('Socios') is not null 
+drop table Socios;
+
+create table Socios(
+numero int identity,
+documento char(8),
+nombre varchar(30),
+domicilio varchar(30),
+primary key (numero)
+);
+ 
+create table Inscriptos (
+numerosocio int not null,
+deporte varchar(20) not null,
+cuotas tinyint
+constraint CK_inscriptos_cuotas check (cuotas between 0 and 10)
+constraint DF_inscriptos_cuotas default 0,
+primary key(numerosocio,deporte),
+constraint FK_inscriptos_socio
+foreign key (numerosocio)
+references socios(numero)
+on update cascade
+on delete cascade,
+);
+
+insert into Socios values('23333333','Alberto Paredes','Colon 111');
+
+insert into Socios values('24444444','Carlos Conte','Sarmiento 755');
+
+insert into Socios values('25555555','Fabian Fuentes','Caseros 987');
+
+insert into Socios values('26666666','Hector Lopez','Sucre 344');
+
+insert into Inscriptos values(1,'tenis',1);
+
+insert into Inscriptos values(1,'basquet',2);
+
+insert into Inscriptos values(1,'natacion',1);
+
+insert into Inscriptos values(2,'tenis',9);
+
+insert into Inscriptos values(2,'natacion',1);
+
+insert into Inscriptos values(2,'basquet',default);
+
+insert into Inscriptos values(2,'futbol',2);
+
+insert into Inscriptos values(3,'tenis',8);
+
+insert into Inscriptos values(3,'basquet',9);
+
+insert into Inscriptos values(3,'natacion',0);
+
+insert into Inscriptos values(4,'basquet',10);
+
+select s.numero, nombre, i.deporte from Socios as s join Inscriptos as i on s.numero = i.numerosocio;
+
+select nombre from Socios join Inscriptos as i on numero = numerosocio 
+where i.deporte = 'natacion' and numero = any(select numerosocio from Inscriptos as i where deporte = 'tenis');
+
+select deporte from Inscriptos 
+where numerosocio = 1 and deporte = any(select deporte from Inscriptos where numerosocio = 2);
+
+select i1.deporte from Inscriptos as i1 join Inscriptos as i2 on i1.deporte = i2.deporte
+where i1.numerosocio = 1 and i2.numerosocio = 2;
+
+select deporte from Inscriptos 
+where numerosocio = 2 and cuotas > any(select cuotas from Inscriptos where numerosocio = 1);
+
+select deporte from Inscriptos 
+where numerosocio = 2 and cuotas > all(select cuotas from Inscriptos where numerosocio = 1);
+
+delete from Inscriptos where numerosocio = any(select numerosocio from Inscriptos where cuotas = 0);
 
 --95) Subconsultas correlacionadas
+if OBJECT_ID('Inscriptos') is not null 
+drop table inscriptos;
+
+if OBJECT_ID('Socios') is not null 
+drop table Socios;
+
+create table Socios(
+numero int identity,
+documento char(8),
+nombre varchar(30),
+domicilio varchar(30),
+primary key (numero)
+);
+ 
+create table Inscriptos (
+numerosocio int not null,
+deporte varchar(20) not null,
+cuotas tinyint
+constraint CK_inscriptos_cuotas check (cuotas between 0 and 10)
+constraint DF_inscriptos_cuotas default 0,
+primary key(numerosocio,deporte),
+constraint FK_inscriptos_socio
+foreign key (numerosocio)
+references socios(numero)
+on update cascade
+on delete cascade,
+);
+
+insert into Socios values('984343979','Alberto Paredes','Colon 111');
+
+insert into Socios values('3454353','Carlos Conte','Sarmiento 755');
+
+insert into Socios values('4363666','Fabian Fuentes','Caseros 987');
+
+insert into Socios values('5645654','Hector Lopez','Sucre 344');
+
+insert into Inscriptos values(1,'tenis',1);
+
+insert into Inscriptos values(1,'basquet',2);
+
+insert into Inscriptos values(1,'natacion',1);
+
+insert into Inscriptos values(2,'tenis',9);
+
+insert into Inscriptos values(2,'natacion',1);
+
+insert into Inscriptos values(2,'basquet',default);
+
+insert into Inscriptos values(2,'futbol',2);
+
+insert into Inscriptos values(3,'tenis',8);
+
+insert into Inscriptos values(3,'basquet',9);
+
+insert into Inscriptos values(3,'natacion',0);
+
+insert into Inscriptos values(4,'basquet',10);
+
+select nombre, domicilio, 
+(select count(*) from Inscriptos 
+where s.numero = numerosocio) as 'Cantidad deportes' 
+from Socios as s;
+
+select nombre, (select count(*)*10 from Inscriptos 
+where s.numero = numerosocio) as 'Total coutas',
+(select sum(cuotas) from Inscriptos where s.numero = numerosocio) as 'Total cuotas pagas'
+from Socios as s;
+
+select nombre, count(deporte), sum(cuotas) from Socios join Inscriptos on numero = numerosocio group by nombre;
+
 
 --96) Exists y No Exists
+if OBJECT_ID('Inscriptos') is not null 
+drop table inscriptos;
+
+if OBJECT_ID('Socios') is not null 
+drop table Socios;
+
+create table Socios(
+numero int identity,
+documento char(8),
+nombre varchar(30),
+domicilio varchar(30),
+primary key (numero)
+);
+ 
+create table Inscriptos (
+numerosocio int not null,
+deporte varchar(20) not null,
+cuotas tinyint
+constraint CK_inscriptos_cuotas check (cuotas between 0 and 10)
+constraint DF_inscriptos_cuotas default 0,
+primary key(numerosocio,deporte),
+constraint FK_inscriptos_socio
+foreign key (numerosocio)
+references socios(numero)
+on update cascade
+on delete cascade,
+);
+
+insert into Socios values('984343979','Alberto Paredes','Colon 111');
+
+insert into Socios values('3454353','Carlos Conte','Sarmiento 755');
+
+insert into Socios values('4363666','Fabian Fuentes','Caseros 987');
+
+insert into Socios values('5645654','Hector Lopez','Sucre 344');
+
+insert into Inscriptos values(1,'tenis',1);
+
+insert into Inscriptos values(1,'basquet',2);
+
+insert into Inscriptos values(1,'natacion',1);
+
+insert into Inscriptos values(2,'tenis',9);
+
+insert into Inscriptos values(2,'natacion',1);
+
+insert into Inscriptos values(2,'basquet',default);
+
+insert into Inscriptos values(2,'futbol',2);
+
+insert into Inscriptos values(3,'tenis',8);
+
+insert into Inscriptos values(3,'basquet',9);
+
+insert into Inscriptos values(3,'natacion',0);
+
+insert into Inscriptos values(4,'basquet',10);
+
+select nombre from Socios as s 
+where exists (select * from Inscriptos where s.numero = numerosocio and deporte like 'tenis');
+
+select nombre from Socios as s 
+where not exists (select * from Inscriptos where s.numero = numerosocio and deporte like 'basquet');
+
+select nombre from Socios as s 
+where exists (select * from Inscriptos where s.numero = numerosocio and cuotas = 10);
 
 --98) Subconsulta en lugar de una tabla
+if OBJECT_ID('Inscriptos') is not null 
+drop table Inscriptos;
+
+if OBJECT_ID('Deportes') is not null 
+drop table Deportes;
+
+if OBJECT_ID('Socios') is not null 
+drop table Socios;
+
+create table Socios(
+documento char(8) not null,
+nombre varchar(30),
+domicilio varchar(30),
+primary key (documento)
+);
+
+create table Deportes(
+codigo tinyint identity,
+nombre varchar(20),
+profesor varchar(15),
+primary key(codigo)
+);
+ 
+create table Inscriptos (
+documento char(8) not null, 
+codigodeporte tinyint not null,
+año char(4),
+matricula char(1),--'s'=paga, 'n'=impaga
+primary key(documento,codigodeporte,año),
+constraint FK_inscriptos_socio
+foreign key (documento)
+references socios(documento)
+on update cascade
+on delete cascade
+);
+
+insert into Socios values('22222222','Ana Acosta','Avellaneda 111');
+insert into Socios values('23333333','Betina Bustos','Bulnes 222');
+insert into Socios values('24444444','Carlos Castro','Caseros 333');
+insert into Socios values('25555555','Daniel Duarte','Dinamarca 44');
+
+insert into Deportes values('basquet','Juan Juarez');
+insert into Deportes values('futbol','Pedro Perez');
+insert into Deportes values('natacion','Marina Morales');
+insert into Deportes values('tenis','Marina Morales');
+
+insert into Inscriptos values ('22222222',3,'2006','s');
+insert into Inscriptos values ('23333333',3,'2006','s');
+insert into Inscriptos values ('24444444',3,'2006','n');
+insert into Inscriptos values ('22222222',3,'2005','s');
+insert into Inscriptos values ('22222222',3,'2007','n');
+insert into Inscriptos values ('24444444',1,'2006','s');
+insert into Inscriptos values ('24444444',2,'2006','s');
+
+select documento, año, matricula, d.nombre, d.profesor from Inscriptos as i 
+join Deportes as d on codigodeporte = codigo;
+
+select s.nombre, t.deporte, t.profesor, t.año from Socios as s
+join (select documento, año, matricula, d.nombre as deporte, d.profesor from Inscriptos as i 
+join Deportes as d on codigodeporte = codigo) as t on t.documento = s.documento;
+
 
 --99) Subconsulta (update - delete)
+if OBJECT_ID('Inscriptos') is not null 
+drop table inscriptos;
+
+if OBJECT_ID('Socios') is not null 
+drop table Socios;
+
+create table Socios(
+numero int identity,
+documento char(8),
+nombre varchar(30),
+domicilio varchar(30),
+primary key (numero)
+);
+ 
+create table Inscriptos (
+numerosocio int not null,
+deporte varchar(20) not null,
+cuotas tinyint
+constraint CK_inscriptos_cuotas check (cuotas between 0 and 10)
+constraint DF_inscriptos_cuotas default 0,
+primary key(numerosocio,deporte),
+constraint FK_inscriptos_socio
+foreign key (numerosocio)
+references socios(numero)
+on update cascade
+on delete cascade,
+);
+
+insert into Socios values('984343979','Alberto Paredes','Colon 111');
+
+insert into Socios values('3454353','Carlos Conte','Sarmiento 755');
+
+insert into Socios values('4363666','Fabian Fuentes','Caseros 987');
+
+insert into Socios values('5645654','Hector Lopez','Sucre 344');
+
+insert into Inscriptos values(1,'tenis',1);
+
+insert into Inscriptos values(1,'basquet',2);
+
+insert into Inscriptos values(1,'natacion',1);
+
+insert into Inscriptos values(2,'tenis',9);
+
+insert into Inscriptos values(2,'natacion',1);
+
+insert into Inscriptos values(2,'basquet',default);
+
+insert into Inscriptos values(2,'futbol',2);
+
+insert into Inscriptos values(3,'tenis',8);
+
+insert into Inscriptos values(3,'basquet',9);
+
+insert into Inscriptos values(3,'natacion',0);
+
+insert into Inscriptos values(4,'basquet',10);
+
+update Inscriptos set matricula = 's' 
+where numerosocio = (select numero from Socios where documento = '25555555');
+
+delete from Inscriptos 
+where numerosocio in(select numero from Socios join Inscriptos on numero = numerosocio where matricula = 'n');
+
 
 --100) Subconsulta (insert)
+if OBJECT_ID('Facturas') is not null 
+drop table Facturas;
+
+if OBJECT_ID('Clientes') is not null 
+drop table Clientes;
+
+create table Clientes(
+codigo int identity,
+nombre varchar(30),
+domicilio varchar(30),
+primary key(codigo)
+);
+
+create table Facturas(
+numero int not null,
+fecha datetime,
+codigocliente int not null,
+total decimal(6,2),
+primary key(numero),
+constraint FK_facturas_cliente
+foreign key (codigocliente)
+references clientes(codigo)
+on update cascade
+);
+
+insert into Clientes values('Juan Lopez','Colon 123');
+
+insert into Clientes values('Luis Torres','Sucre 987');
+
+insert into Clientes values('Ana Garcia','Sarmiento 576');
+
+insert into Clientes values('Susana Molina','San Martin 555');
+
+insert into Facturas values(1200,'2007-01-15',1,300);
+
+insert into Facturas values(1201,'2007-01-15',2,550);
+
+insert into Facturas values(1202,'2007-01-15',3,150);
+
+insert into Facturas values(1300,'2007-01-20',1,350);
+
+insert into Facturas values(1310,'2007-01-22',3,100);
+
+if OBJECT_ID ('ClientesPref') is not null 
+drop table ClientesPref;
+
+create table ClientesPref(
+nombre varchar(30),
+domicilio varchar(30)
+);
+
+insert into ClientesPref(nombre, domicilio)
+
+select nombre, domicilio from Clientes 
+where codigo in(select codigocliente from facturas join Clientes on codigo = codigocliente
+group by codigocliente having sum(total) > 500)
+
+select * from ClientesPref;
+
 
 --101) Crear tabla a partir de otra (select - into)
 
---103) Vistas
+if OBJECT_ID('Empleados')is not null 
+drop table Empleados;
+
+if OBJECT_ID('Sucursales')is not null 
+drop table Sucursales;
+
+create table Sucursales( 
+codigo int identity,
+ciudad varchar(30) not null,
+primary key(codigo)
+); 
+
+create table Empleados( 
+documento char(8) not null,
+nombre varchar(30) not null,
+domicilio varchar(30),
+seccion varchar(20),
+sueldo decimal(6,2),
+codigosucursal int,
+primary key(documento),
+constraint FK_empleados_sucursal
+foreign key (codigosucursal)
+references sucursales(codigo)
+on update cascade
+); 
+
+insert into Sucursales values('Cordoba');
+
+insert into Sucursales values('Villa Maria');
+
+insert into Sucursales values('Carlos Paz');
+
+insert into Sucursales values('Cruz del Eje');
+
+insert into Empleados values('968787','Ana Acosta','Avellaneda 111','Secretaria',500,1);
+
+insert into Empleados values('6456456','Carlos Caseros','Colon 222','Sistemas',800,1);
+
+insert into Empleados values('546546546','Diana Dominguez','Dinamarca 333','Secretaria',550,2);
+
+insert into Empleados values('645654664','Fabiola Fuentes','Francia 444','Sistemas',750,2);
+
+insert into Empleados values('46464564','Gabriela Gonzalez','Guemes 555','Secretaria',580,3);
+
+insert into Empleados values('23423423','Juan Juarez','Jujuy 777','Secretaria',500,4);
+
+insert into Empleados values('234234324','Luis Lopez','Lules 888','Sistemas',780,4);
+
+insert into Empleados values('787978078','Maria Morales','Marina 999','Contaduria',670,4);
+
+select documento, nombre, domicilio, seccion, sueldo, ciudad from Empleados 
+join Sucursales on codigo = codigosucursal;
+
+if OBJECT_ID('Secciones') is not null 
+drop table Secciones;
+
+select distinct seccion as nombre into Secciones from Empleados;
+
+select * from Secciones;
+
+if OBJECT_ID('SueldoPorSeccion') is not null 
+drop table SueldoPorSeccion;
+
+select seccion, sum(sueldo) as total into SueldoPorSeccion from Empleados group by seccion;
+
+select * from SueldoPorSeccion;
+
+if OBJECT_ID('MaximosSueldos') is not null 
+drop table SueldoPorSeccion;
+
+select top 3 * into MaximosSueldos from Empleados order by sueldo;
+
+select * from MaximosSueldos;
+
+if OBJECT_ID('SucursalCordoba') is not null 
+drop table SucursalCordoba;
+
+select nombre, ciudad into SucursalCordoba from Empleados join sucursales on codigo = codigosucursal
+where ciudad = 'Cordoba';
+
+select *from SucursalCordoba;
+
 
 --110) Lenguaje de control de flujo (case)
+if object_id('Empleados') is not null 
+drop table Empleados;
+
+create table Empleados(
+documento char(8) not null,
+nombre varchar(30) not null,
+sexo char(1),
+fechanacimiento datetime,
+fechaingreso datetime,
+cantidadhijos tinyint,
+sueldo decimal(5,2),
+primary key(documento)
+)
+insert into Empleados values ('78978978','Ana Gomez','f','1976-09-21','1998-11-06',3,350);
+
+insert into Empleados values ('789789','Ofelia Garcia','f','1974-05-12','1990-11-06',0,390);
+
+insert into Empleados values ('978978','Oscar Torres','m','1978-05-02','1997-11-06',1,400);
+
+insert into Empleados values ('545666','Laura Torres','f','1965-12-22','2003-11-06',3,400);
+
+insert into Empleados values ('3543534','Alberto Soto','m','1989-10-10','1999-11-06',2,420);
+
+insert into Empleados values ('8676686','Juan Perez','m','1970-05-10','1987-04-05',2,550);
+
+insert into Empleados values ('6456654','Susana Morales','f','1975-11-06','1990-04-06',0,650);
+
+insert into Empleados values ('45654645','Hector Pereyra','m','1965-03-25','1997-04-12',3,510);
+
+insert into Empleados values ('45654354','Luis LUque','m','1980-03-29','1999-11-06',1,700);
+
+
+
+
+select sexo, count(*), regalo = 
+case
+when sexo = 'f' then 'ramo'
+when sexo = 'm' then 'corbata'
+end
+from Empleados where datepart(month, fechanacimiento) = 5 group by sexo;
+
+select nombre, datepart(year, getdate()) - datepart(year, fechaingreso) as 'Anios servicio', placa =
+case (datepart(year, getdate()) - datepart(year, fechaingreso)%10)
+when 0 then 'si'
+else 'no'
+end
+from Empleados where datepart(year, fechaingreso) = 4;
+
+
+select nombre, sueldo, cantidadhijos, porhijo =
+case 
+when sueldo <= 500 then 200
+else 100
+end,
+salariofamilar =
+case
+when sueldo <= 500 then 200*cantidadhijos
+else 100*cantidadhijos
+end,
+sueldototal=
+case
+when sueldo < = 500 then sueldo+( 200*cantidadhijos)
+else sueldo+(100*cantidadhijos)
+end
+from Empleados order by sueldototal;
+
+
+
 
 --111) Lenguaje de control de flujo (if)
+if OBJECT_ID('Empleados') is not null 
+drop table Empleados;
+
+create table Empleados(
+documento char(8) not null,
+nombre varchar(30) not null,
+sexo char(1),
+fechanacimiento datetime,
+sueldo decimal(5,2),
+primary key(documento)
+);
+
+insert into Empleados values ('4588645','Ofelia Garcia','f','1974-05-12',390);
+
+insert into Empleados values ('69878978','Oscar Torres','m','1978-05-02',400);
+
+insert into Empleados values ('556898','Juan Perez','m','1970-05-10',550);
+
+insert into Empleados values ('7567775','Susana Morales','f','1975-11-06',650);
+
+insert into Empleados values ('7897854','Alberto Soto','m','1989-10-10',420);
+
+insert into Empleados values ('45654664','Ana Gomez','f','1976-09-21',350);
+
+insert into Empleados values ('5675656','Hector Pereyra','m','1965-03-25',510);
+
+insert into Empleados values ('56756756','Luis LUque','m','1980-03-29',700);
+
+insert into Empleados values ('978978','Laura Torres','f','1965-12-22',400);
+
+
+if exists(select * from Empleados where datepart(month,fechanacimiento)=5)
+select sexo, count(*) from Empleados where datepart(month,fechanacimiento)=5 group by sexo
+else
+select 'no hay empleados';
+
+
 
 --120) Procedimientos almacenados (crear - ejecutar)
+if OBJECT_ID('Empleados') is not null 
+drop table Empleados;
+
+create table Empleados(
+documento char(8),
+nombre varchar(20),
+apellido varchar(20),
+sueldo decimal(6,2),
+cantidadhijos tinyint,
+seccion varchar(20),
+primary key(documento)
+);
+
+insert into Empleados values('96678676','Juan','Perez',300,2,'Contaduria');
+
+insert into Empleados values('45654654','Luis','Lopez',300,0,'Contaduria');
+
+insert into Empleados values('56756765','Jose Maria','Morales',400,3,'Secretaria');
+
+insert into Empleados values ('3534534','Marta','Perez',500,1,'Sistemas');
+
+insert into Empleados values('756765','Susana','Garcia',400,2,'Secretaria');
+
+
+
+if OBJECT_ID('pa_empleados_sueldo') is not null 
+drop procedure pa_empleados_sueldo;
+
+create proc pa_empleados_sueldo as
+select nombre, apellido, sueldo from empleados;
+
+exec pa_empleados_sueldo;
+
+if object_id('pa_empleados_hijos') is not null 
+drop procedure pa_empleados_hijos;
+
+create proc pa_empleados_hijos as
+
+select nombre, apellido, cantidadhijos from Empleados 
+where cantidadhijos <> 0;
+
+exec pa_empleados_hijos;
+
+update empleados set cantidadhijos = 3 
+where cantidadhijos = 0;
+
+exec pa_empleados_hijos;
+
+
 
 --135) Funciones escalares (crear y llamar)
+if OBJECT_ID('Empleados') is not null 
+drop table Empleados;
+
+create table Empleados(
+documento char(8) not null,
+nombre varchar(30),
+fechanacimiento datetime,
+fechaingreso datetime,
+telefono char(12),
+mail varchar(50)
+);
+
+insert into Empleados values('68556678', 'Ana Acosta', '1970/10/02', '1995/10/10', '4556677', 'anitaacosta@hotmail.com');
+
+insert into Empleados values('4565543', 'Bernardo Bustos', '1973/01/15', '1999/02/15', '4789012', null);
+
+insert into Empleados values('23534534', 'Carlos Caseros', '1980/5/25', '2001/05/05', null, null);
+
+insert into Empleados values('353453453', 'Estela Esper', '1985/02/20', '2006/12/12', null, 'estelaesper@gmail.com');
+
+if OBJECT_ID('f_Edad') is not null 
+drop function f_Edad;
+
+create function f_Edad(@fecha1 datetime, @fecha2 datetime = '2007/01/01')
+returns tinyint
+ begin
+  declare @edad tinyint
+  if(@fecha1 > @fecha2)
+   begin
+    set @edad = datepart(year, @fecha1)- datepart(year, @fecha2)
+    if(datepart(year, @fecha1) < datepart(year, @fecha2))
+     set @edad = @edad-1
+  else
+   if(datepart(month, @fecha1) = datepart(month, @fecha2) and 
+      datepart(day, @fecha1) < datepart(day, @fecha2))
+    set @edad = @edad-1
+   end
+  return @edad
+ end;
+
+select nombre, dbo.f_Edad(getdate(), fechanacimiento) as edad from Empleados;
+
+select nombre, dbo.f_Edad(fechaingreso , fechanacimiento) as 'Anios Servicios' from Empleados;
+
+select dbo.f_Edad(getdate(), '6/26/1995');
+
+select dbo.f_Edad(getdate(), default);
+
+if OBJECT_ID('f_valorNulos') is not null 
+drop function f_valorNulos;
+
+create function f_valorNulos(@valor varchar(50))
+returns varchar(50)
+ begin
+  declare @dato varchar(50)
+  if(@valor is null)
+   set @dato = 'No tiene'
+  return @dato
+ end;
+
+select dbo.f_valorNulos(mail), dbo.f_valorNulos(telefono) from Empleados;
+
+
 
 --136) Funciones de tabla de varias instrucciones
+if OBJECT_ID('Empleados') is not null 
+drop table Empleados;
 
+create table Empleados(
+documento char(8) not null,
+apellido varchar(30) not null,
+nombre varchar(30) not null,
+domicilio varchar(30),
+ciudad varchar(30),
+fechanacimiento datetime,
+constraint PK_empleados
+primary key(documento)
+);
 
+insert into Empleados values('654645','Acosta','Ana','Avellaneda 123','Cordoba','1970/10/10');
 
---) Funciones con valores de tabla en línea
+insert into Empleados values('56765','Bustos','Bernardo','Bulnes 234','Cordoba','1972/05/15');
+
+insert into Empleados values('657567','Caseros','Carlos','Colon 356','Carlos Paz','1980/02/25');
+
+insert into Empleados values('75676575','Fuentes','Fabiola','Fragueiro 987','Jesus Maria','1984/06/12');
+
+if OBJECT_ID('f_Empleados') is not null 
+drop function f_Empleados;
+
+create function f_Empleados(@valor varchar(10))
+returns @list table(documento char(8), nombre varchar(60), domicilio varchar(60), nacimiento varchar(12))
+as
+ begin
+  if(@valor = 'total')
+   insert @list select documento, nombre, domicilio, fechanacimiento from Empleados
+  if(@valor = 'parcial')
+   insert @list select documento, apellido, ciudad, fechanacimiento from Empleados
+  return
+ end;
+
+select * from f_Empleados('total');
+
+select * from f_Empleados('');
+
+select * from f_Empleados('parcial') 
+where domicilio like 'Cordoba';
 
